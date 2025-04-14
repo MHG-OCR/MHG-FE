@@ -1,0 +1,41 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "sourceMap": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "declaration": false,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "lib": ["ES2022", "dom"],
+    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "outDir": "./dist/out-tsc",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@env/*": ["./src/env/*"],
+      "@theme/*": ["./src/theme/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@services/*": ["./src/services/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "types": ["node"],
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "enableI18nLegacyMessageIdFormat": false
+  }
+}
