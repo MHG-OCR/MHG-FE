@@ -1,6 +1,0 @@
-{
-    "isDev" : false,
-    "backend_url" : "http://102.130.124.25/api/",
-    "backend_url_dev" : "http://localhost:5031/api/",
-    "secret_encrypt" : "9513631246559799"
-}

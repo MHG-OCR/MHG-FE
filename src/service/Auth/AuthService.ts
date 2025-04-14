@@ -1,13 +1,10 @@
 import {
   iAuthService,
   iUserStorage,
-  isAuthenticatedRequestBody,
-  UserRegisterDto,
 } from './iAuthService';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../Http/HttpService';
-import { iHttpRequest } from '../Http/iHttpService';
 import { StorageService } from '../LocalStorage/LocalStorageService';
 
 @Injectable({
@@ -22,32 +19,6 @@ export class AuthService implements iAuthService {
   ) {
     this._routerAngular = new Router();
   }
-  public PostUser = async (args: UserRegisterDto) => {
-    return await this._httpService.request<boolean>({
-      path: 'user/PostUser',
-      type: 'POST',
-      body: args,
-    });
-  };
-  public Authenticate = async (
-    requestBody: isAuthenticatedRequestBody
-  ): Promise<boolean> => {
-    const headers: iHttpRequest = {
-      path: 'user/AuthenticateUser',
-      type: 'POST',
-      body: requestBody,
-    };
-    return await this._httpService
-      .request<iUserStorage>(headers)
-      .then((res) => {
-        this.StoreCredentials(res!);
-        this._routerAngular.navigate(['home']);
-        return true;
-      })
-      .catch((err) => {
-        return false;
-      });
-  };
   public StoreCredentials = (userStorage: iUserStorage) => {
     const keys = Object.keys(userStorage!);
     const key_values = Object.values(userStorage!);

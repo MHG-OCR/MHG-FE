@@ -10,17 +10,13 @@ export class HttpService {
   private DEFAULT_HEADERS = {
     'Content-Type': 'application/json',
   };
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   public request<ReturnType>(request: iHttpRequest): Promise<ReturnType> {
-    // This is weird i know
-    // Long story
+    // TODO refactor , remove promise wrapper
     return new Promise((res, rej) => {
-      const url = `${
-        EnvConfig.getAppConfig().isDev
-          ? EnvConfig.getAppConfig().backend_url_dev
-          : EnvConfig.getAppConfig().backend_url
-      }${request.path}`;
+      const url = `${EnvConfig.getAppConfig().backend_url
+        }${request.path}`;
       var httpOptions = {
         headers: this.DEFAULT_HEADERS,
       };
@@ -30,10 +26,10 @@ export class HttpService {
           ...httpOptions,
         })
         .subscribe({
-          next: (value) => {
+          next: (value: unknown) => {
             res(value as ReturnType);
           },
-          error(err) {
+          error(err: any) {
             rej(err.message);
           },
         });

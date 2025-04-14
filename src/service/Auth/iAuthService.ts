@@ -1,8 +1,3 @@
-export interface IAuthService {
-  Authenticate: (requestBody: isAuthenticatedRequestBody) => Promise<boolean>;
-  StoreCredentials: (userStorage: iUserStorage) => void;
-}
-
 export abstract class iAuthService implements iAuthService{
     static GetCredentials: () => iUserStorage | null;
 }

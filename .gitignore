@@ -45,3 +45,6 @@ android/
 ios/
 .vscode/
 .vs/
+
+# env
+.env
