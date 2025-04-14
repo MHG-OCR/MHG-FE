@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
+import { HomePageComponent } from './pages/home.component';
 
 export const routes: Routes = [
   {
-    path: 'signin',
-    component: '' as unknown as any,
+    path: '',
+    component: HomePageComponent,
   },
 ];

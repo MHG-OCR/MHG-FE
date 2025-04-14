@@ -5,7 +5,7 @@ import {
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../Http/HttpService';
-import { StorageService } from '../LocalStorage/LocalStorageService';
+import { StorageService } from '@helpers/LocalStorageHelper';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,6 @@ export class AuthService implements iAuthService {
   static cookieKeys = ['userId', 'userRole', 'userToken'];
   public _routerAngular: Router;
   constructor(
-    private _httpService: HttpService,
     private _storageService: StorageService
   ) {
     this._routerAngular = new Router();
