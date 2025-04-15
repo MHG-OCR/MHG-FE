@@ -20,7 +20,6 @@ export class PDFSnippingComponent implements OnInit {
   startY = 0;
   isDragMode = false;
 
-  // Updated to include a color property and unique ID for each selection
   coordsList: Array<{
     id: number,
     topLeft: { x: number, y: number },
@@ -30,10 +29,8 @@ export class PDFSnippingComponent implements OnInit {
     color: string
   }> = [];
 
-  // Counter for generating unique IDs
   private nextId = 1;
 
-  // Array of colors to cycle through for selections
   private selectionColors = [
     'rgba(255, 99, 71, 0.3)',   // Tomato
     'rgba(30, 144, 255, 0.3)',  // DodgerBlue
@@ -61,9 +58,7 @@ export class PDFSnippingComponent implements OnInit {
         alert('Please upload a PDF file');
         return;
       }
-
       this.pdfSrc = URL.createObjectURL(file);
-      // Clear any existing selections when a new file is loaded
       this.coordsList = [];
       this.nextId = 1;
       this.findPdfViewerElement();
@@ -133,8 +128,6 @@ export class PDFSnippingComponent implements OnInit {
       width: `${width}px`,
       height: `${height}px`
     };
-    
-    // For debugging
     console.log('Mouse movement - Current coords:', { currentX, currentY });
     console.log('Selection style:', this.selectionStyle);
   }
@@ -158,13 +151,13 @@ export class PDFSnippingComponent implements OnInit {
     const x2 = Math.max(this.startX, endX);
     const y2 = Math.max(this.startY, endY);
   
-    // Don't add if it's too small (probably an accidental click)
+    // Don't add if it's too small 
     if (Math.abs(x2 - x1) < 10 || Math.abs(y2 - y1) < 10) {
       this.isSelectionActive = false;
       return;
     }
   
-    // Choose a color for this selection (cycle through colors)
+    // Choose a color for this selection
     const colorIndex = (this.nextId - 1) % this.selectionColors.length;
     const selectionColor = this.selectionColors[colorIndex];
   
@@ -195,12 +188,10 @@ export class PDFSnippingComponent implements OnInit {
   }
 
   highlightSelection(index: number): void {
-    // Find the element and scroll it into view
     setTimeout(() => {
       const element = document.getElementById(`selection-${this.coordsList[index].id}`);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Add a temporary highlight effect
         element.classList.add('highlight-pulse');
         setTimeout(() => {
           element.classList.remove('highlight-pulse');
@@ -226,13 +217,11 @@ export class PDFSnippingComponent implements OnInit {
   scrollObserver: MutationObserver | null = null;
   findPdfViewerElement() {
     setTimeout(() => {
-      // Look for the PDF viewer content element
       this.pdfViewerElement = document.querySelector('.pdfViewer');
       if (this.pdfViewerElement) {
         console.log('Found PDF viewer element', this.pdfViewerElement);
         this.setupScrollObserver();
       } else {
-        // Try again if not found (the viewer might not be fully loaded)
         console.log('PDF viewer element not found, retrying...');
         this.findPdfViewerElement();
       }
@@ -241,7 +230,6 @@ export class PDFSnippingComponent implements OnInit {
   setupScrollObserver() {
     if (!this.pdfViewerElement) return;
     
-    // Get the scrollable container (usually a parent of the pdfViewer)
     const scrollContainer = this.pdfViewerElement.closest('.scrolledView') || this.pdfViewerElement.parentElement;
     
     if (!scrollContainer) return;
