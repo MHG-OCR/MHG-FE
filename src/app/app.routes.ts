@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { SnippingPageComponent } from './pages/Snipping/snipping.page';
 import { AuthGuard } from '../service/Auth/AuthInterceptor';
 import { HomePageComponent } from './pages/Home/home.page';
+import { DocumentUploadComponent } from './pages/Document-Upload/document-upload.page';
 
 const RootPageComponent = HomePageComponent;
 
@@ -15,6 +16,11 @@ export const routes: Routes = [
     path: 'home',
     component: HomePageComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'document-upload',
+    component: DocumentUploadComponent,
+    canActivate: [],
   },
   {
     path: 'snipping',

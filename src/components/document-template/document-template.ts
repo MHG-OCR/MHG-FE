@@ -32,7 +32,7 @@ export class DocumentTemplateComponent extends iTableLibAbstract implements OnIn
         {
             title: 'Add New',
             event: async (args?: unknown) => {
-                this._Router.navigate(["snipping"])
+                this._Router.navigate(["document-upload"])
             },
         },
     ];
