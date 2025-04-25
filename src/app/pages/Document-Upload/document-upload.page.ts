@@ -18,7 +18,10 @@ export class DocumentUploadComponent {
   async onSubmit(args: Array<File>) {
     const file = args[0]
     const fileBase64 = await FileHelper.toBase64(file)
-    // todo 
-    // this._FileEndpoints.uploadDocument()
+    await this._FileEndpoints.uploadDocument({
+      filename: file.name,
+      size: file.size,
+      base64Data: fileBase64
+    })
   }
 }

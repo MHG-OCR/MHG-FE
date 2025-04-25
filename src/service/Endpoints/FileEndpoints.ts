@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "../Http/HttpService";
 import { iHttpRequest } from "../Http/iHttpService";
+import { iUploadDocumentReq } from "./Interfaces";
+import { firstValueFrom } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -8,17 +10,17 @@ import { iHttpRequest } from "../Http/iHttpService";
 
 export class FileEndpoints {
     constructor(private readonly _HttpService: HttpService) { }
-
-    public uploadDocument(args: any): void {
-        this._HttpService
-            .request<any>({ type: 'POST', path: '/my-endpoint', body: args })
-            .subscribe({
-                next: (data: any) => {
-                    console.log('Upload success:', data);
-                },
-                error: (err: any) => {
-                    console.error('Upload error:', err);
-                },
-            });
+    private readonly _ControllerPath: string = "/api/fe"
+    public uploadDocument(args: iUploadDocumentReq) {
+        return (firstValueFrom(
+            this._HttpService
+                .request<unknown>({ type: 'POST', path: `${this._ControllerPath}/document/upload`, body: args })
+        ))
+    }
+    public getDocumentTemplateTable() {
+        return (firstValueFrom(
+            this._HttpService
+                .request<Array<object | string>>({ type: 'POST', path: `${this._ControllerPath}/document/table`, body: null })
+        ))
     }
 }

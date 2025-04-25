@@ -1,3 +1,4 @@
+import { LoadingService } from './../Loading/LoadingService';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { iHttpRequest } from './iHttpService';
@@ -11,11 +12,15 @@ export class HttpService {
     'Content-Type': 'application/json',
   });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private _HttpClient: HttpClient,
+    private _LoadingService: LoadingService
+  ) { }
 
   public request<ReturnType>(request: iHttpRequest): Observable<ReturnType> {
+    this._LoadingService.show()
     const url = `${environment.backend_url}${request.path}`;
-    return this.httpClient.request<ReturnType>(
+    return this._HttpClient.request<ReturnType>(
       request.type,
       url,
       {
