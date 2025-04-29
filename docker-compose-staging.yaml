@@ -1,0 +1,11 @@
+name: momentum-health
+
+services:
+  momentum-health-web:
+    image: 471112557413.dkr.ecr.eu-west-1.amazonaws.com/something
+    networks:
+      - internal-network
+      
+networks:
+  internal-network:
+    driver: bridge
