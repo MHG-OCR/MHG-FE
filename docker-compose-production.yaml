@@ -1,0 +1,12 @@
+services:
+  momentum-health-web:
+    container_name: momentum-health-web
+    build : ./
+    expose:
+      - "4654"
+    networks:
+      - internal-network
+      
+networks:
+  internal-network:
+    driver: bridge
