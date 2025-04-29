@@ -1,0 +1,14 @@
+.component-generic-table-view-container {
+    padding: 0.5rem;
+}
+
+.component-generic-table-view-title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem
+}
+
+.component-generic-table-container {
+    overflow-x: auto;
+}
