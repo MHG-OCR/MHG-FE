@@ -1,32 +1,38 @@
-import { LoadingService } from './../Loading/LoadingService';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { iHttpRequest } from './iHttpService';
-import { environment } from '@env/enviroment';
-import { Observable } from 'rxjs';
+import { enviroment } from '@env/enviroment';
 
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class HttpService {
-  private DEFAULT_HEADERS = new HttpHeaders({
+  private DEFAULT_HEADERS = {
     'Content-Type': 'application/json',
-  });
+  };
+  constructor(private _httpClient: HttpClient) { }
 
-  constructor(
-    private _HttpClient: HttpClient,
-    private _LoadingService: LoadingService
-  ) { }
-
-  public request<ReturnType>(request: iHttpRequest): Observable<ReturnType> {
-    this._LoadingService.show()
-    const url = `${environment.backend_url}${request.path}`;
-    return this._HttpClient.request<ReturnType>(
-      request.type,
-      url,
-      {
-        body: request.body,
+  public request<ReturnType>(request: iHttpRequest): Promise<ReturnType> {
+    // TODO refactor , remove promise wrapper
+    return new Promise((res, rej) => {
+      const url = `${enviroment.backend_url
+        }${request.path}`;
+      var httpOptions = {
         headers: this.DEFAULT_HEADERS,
-      }
-    );
+      };
+      return this._httpClient
+        .request<ReturnType>(request.type, url, {
+          body: request.body,
+          ...httpOptions,
+        })
+        .subscribe({
+          next: (value: unknown) => {
+            res(value as ReturnType);
+          },
+          error(err: any) {
+            rej(err.message);
+          },
+        });
+    });
   }
 }

@@ -4,6 +4,7 @@ import {
 } from './iAuthService';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { HttpService } from '../Http/HttpService';
 import { StorageService } from '@helpers/LocalStorageHelper';
 
 @Injectable({
@@ -11,10 +12,11 @@ import { StorageService } from '@helpers/LocalStorageHelper';
 })
 export class AuthService implements iAuthService {
   static cookieKeys = ['userId', 'userRole', 'userToken'];
+  public _routerAngular: Router;
   constructor(
-    private _storageService: StorageService,
-    private _routerAngular: Router
+    private _storageService: StorageService
   ) {
+    this._routerAngular = new Router();
   }
   public StoreCredentials = (userStorage: iUserStorage) => {
     const keys = Object.keys(userStorage!);

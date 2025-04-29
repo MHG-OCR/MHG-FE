@@ -1,6 +1,0 @@
-services:
-  momentum-health-web:
-    container_name: momentum-health-web
-    build : ./
-    ports:
-      - 4654:4654
