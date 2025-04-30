@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+    <div class="grid">
+        <!-- Document Templates -->
+        <div class="card">
+            <div class="icon bg-blue">
+                <i class="material-icons">description</i>
+            </div>
+            <div class="count">{{ this._data?.templates }}</div>
+            <div class="label">Document Templates</div>
+            <div class="bar bg-blue"></div>
+        </div>
+
+        <!-- Documents Processed -->
+        <div class="card">
+            <div class="icon bg-green">
+                <i class="material-icons">check_circle</i>
+            </div>
+            <div class="count">{{ this._data?.documentsProcessed }}</div>
+            <div class="label">Documents Processed</div>
+            <div class="bar bg-green"></div>
+        </div>
+
+        <!-- Total Accuracy -->
+        <div class="card">
+            <div class="icon bg-purple">
+                <i class="material-icons">insights</i>
+            </div>
+            <div class="count">{{ this._data?.accuracy }}%</div>
+            <div class="label">Total Accuracy</div>
+            <div class="bar bg-purple"></div>
+        </div>
+    </div>
+</div>
