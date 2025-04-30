@@ -11,14 +11,14 @@
 
   <!-- PDF Viewer with Selection Overlay -->
   <div class="pdf-container" #pdfContainer
-       (mousedown)="onMouseDown($event)" 
-       (mousemove)="onMouseMove($event)" 
+       (mousedown)="onMouseDown($event)"
+       (mousemove)="onMouseMove($event)"
        (mouseup)="onMouseUp($event)">
-    
+
     <!-- PDF Viewer Component -->
-    <ngx-extended-pdf-viewer 
+    <ngx-extended-pdf-viewer
       *ngIf="pdfSrc"
-      [src]="pdfSrc" 
+      [src]="pdfSrc"
       [zoom]="'page-actual'"
       [showHandToolButton]="true"
       [showDownloadButton]="false"
@@ -33,15 +33,15 @@
       Upload a PDF to start snipping
     </div>
 
-    <!-- Active Selection Overlay Box (while drawing) TODOD --> 
-    <!-- <div #selectionBox 
-         *ngIf="isSelectionActive" 
+    <!-- Active Selection Overlay Box (while drawing) TODOD -->
+    <!-- <div #selectionBox
+         *ngIf="isSelectionActive"
          class="selection-rectangle active-selection"
          [ngStyle]="selectionStyle">
     </div> -->
 
     <!-- All Completed Selections -->
-    <div *ngFor="let coords of coordsList; let i = index" 
+    <div *ngFor="let coords of coordsList; let i = index"
          [id]="'selection-' + coords.id"
          class="selection-rectangle completed-selection"
          [ngStyle]="getSelectionStyle(coords)">
@@ -67,6 +67,10 @@
           <div>Top-Right: ({{ coords.topRight.x.toFixed(0) }}, {{ coords.topRight.y.toFixed(0) }})</div>
           <div>Bottom-Right: ({{ coords.bottomRight.x.toFixed(0) }}, {{ coords.bottomRight.y.toFixed(0) }})</div>
           <div>Bottom-Left: ({{ coords.bottomLeft.x.toFixed(0) }}, {{ coords.bottomLeft.y.toFixed(0) }})</div>
+        </div>
+        <div class="component-generic-table-container">
+          <app-table-lib-component [_data]="this._data" [_actions]="this._actions" [_rowActions]="this._rowActions"
+                                   [_isEmpty]="this._isEmpty"></app-table-lib-component>
         </div>
       </div>
     </div>

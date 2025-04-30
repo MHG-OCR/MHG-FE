@@ -49,7 +49,7 @@ export class DocumentTemplateComponent extends iTableLibAbstract implements OnIn
     ];
     public _rowActions: Array<iTableLibActionsArgs> = [
         {
-            title: 'Configure',
+            title: 'Manage',
             event: async (id: string) => {
                 this._Router.navigate(["snipping"])
             },

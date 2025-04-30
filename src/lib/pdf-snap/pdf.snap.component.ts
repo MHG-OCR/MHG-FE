@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
 import { NgxExtendedPdfViewerModule, pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
+import {TablelibComponent} from "@lib/table-lib/table-lib.component";
+import { iTableLibAbstract, iTableLibActionsArgs, iTableLibIsEmptyArgs,  } from "@lib/table-lib/interface";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-pdf-snipping',
@@ -9,7 +12,8 @@ import { NgxExtendedPdfViewerModule, pdfDefaultOptions } from 'ngx-extended-pdf-
   standalone: true,
   imports: [
     CommonModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    TablelibComponent
   ]
 })
 export class PDFSnippingComponent implements OnInit {
@@ -45,8 +49,13 @@ export class PDFSnippingComponent implements OnInit {
   @ViewChild('selectionBox') selectionBox!: ElementRef<HTMLDivElement>;
   @ViewChild('pdfContainer') pdfContainer!: ElementRef<HTMLDivElement>;
 
+  @Input()
+  _isEmpty?: iTableLibIsEmptyArgs;
+
   ngOnInit(): void {
     pdfDefaultOptions.assetsFolder = 'assets';
+  }
+  constructor(private readonly _Router: Router) {
   }
 
   onFileSelected(event: Event): void {
@@ -79,22 +88,22 @@ export class PDFSnippingComponent implements OnInit {
   }
   onMouseDown(event: MouseEvent): void {
     if (!this.isDragMode || !this.pdfSrc) return;
-  
+
     this.isSelectionActive = true;
     const containerRect = this.pdfContainer.nativeElement.getBoundingClientRect();
-    
+
     // Find the PDF viewer element to get its offset
     const pdfViewer = document.querySelector('.pdfViewer');
     const pdfRect = pdfViewer ? pdfViewer.getBoundingClientRect() : containerRect;
-    
+
     // Calculate the offset between container and PDF content
     const offsetX = pdfRect.left - containerRect.left;
     const offsetY = pdfRect.top - containerRect.top;
-    
+
     // Adjust starting coordinates with the offset
     this.startX = event.clientX - containerRect.left - offsetX;
     this.startY = event.clientY - containerRect.top - offsetY;
-  
+
     this.selectionStyle = {
       left: `${this.startX}px`,
       top: `${this.startY}px`,
@@ -105,23 +114,23 @@ export class PDFSnippingComponent implements OnInit {
 
   onMouseMove(event: MouseEvent): void {
     if (!this.isSelectionActive) return;
-  
+
     const containerRect = this.pdfContainer.nativeElement.getBoundingClientRect();
     const pdfViewer = document.querySelector('.pdfViewer');
     const pdfRect = pdfViewer ? pdfViewer.getBoundingClientRect() : containerRect;
-    
+
     const offsetX = pdfRect.left - containerRect.left;
     const offsetY = pdfRect.top - containerRect.top;
-    
+
     // Apply the same offset calculations as in onMouseDown and onMouseUp
     const currentX = event.clientX - containerRect.left - offsetX;
     const currentY = event.clientY - containerRect.top - offsetY;
-  
+
     const x = Math.min(this.startX, currentX);
     const y = Math.min(this.startY, currentY);
     const width = Math.abs(currentX - this.startX);
     const height = Math.abs(currentY - this.startY);
-  
+
     this.selectionStyle = {
       left: `${x}px`,
       top: `${y}px`,
@@ -134,33 +143,33 @@ export class PDFSnippingComponent implements OnInit {
 
   onMouseUp(event: MouseEvent): void {
     if (!this.isSelectionActive) return;
-  
+
     const containerRect = this.pdfContainer.nativeElement.getBoundingClientRect();
     const pdfViewer = document.querySelector('.pdfViewer');
     const pdfRect = pdfViewer ? pdfViewer.getBoundingClientRect() : containerRect;
-    
+
     const offsetX = pdfRect.left - containerRect.left;
     const offsetY = pdfRect.top - containerRect.top;
-    
+
     const endX = event.clientX - containerRect.left - offsetX;
     const endY = event.clientY - containerRect.top - offsetY;
-  
+
     // Calculate the corner coordinates
     const x1 = Math.min(this.startX, endX);
     const y1 = Math.min(this.startY, endY);
     const x2 = Math.max(this.startX, endX);
     const y2 = Math.max(this.startY, endY);
-  
-    // Don't add if it's too small 
+
+    // Don't add if it's too small
     if (Math.abs(x2 - x1) < 10 || Math.abs(y2 - y1) < 10) {
       this.isSelectionActive = false;
       return;
     }
-  
+
     // Choose a color for this selection
     const colorIndex = (this.nextId - 1) % this.selectionColors.length;
     const selectionColor = this.selectionColors[colorIndex];
-  
+
     const coords = {
       id: this.nextId++,
       topLeft: { x: x1, y: y1 },
@@ -169,10 +178,10 @@ export class PDFSnippingComponent implements OnInit {
       bottomLeft: { x: x1, y: y2 },
       color: selectionColor
     };
-  
+
     this.coordsList.push(coords);
     console.log('Selection corners:', coords);
-  
+
     this.isSelectionActive = false;
   }
 
@@ -210,6 +219,7 @@ export class PDFSnippingComponent implements OnInit {
   }
 
   saveSelections(): void {
+
     console.log('Saving selections:', this.coordsList);
     alert(`Saved ${this.coordsList.length} selections for processing`);
   }
@@ -229,23 +239,23 @@ export class PDFSnippingComponent implements OnInit {
   }
   setupScrollObserver() {
     if (!this.pdfViewerElement) return;
-    
+
     const scrollContainer = this.pdfViewerElement.closest('.scrolledView') || this.pdfViewerElement.parentElement;
-    
+
     if (!scrollContainer) return;
-    
+
     console.log('Setting up scroll observer for', scrollContainer);
-    
+
     // Use scroll event listener instead of MutationObserver for scrolling
     scrollContainer.addEventListener('scroll', () => {
       this.updateSelectionPositions();
     });
-    
+
     // Also observe changes to the PDF viewer content itself
     this.scrollObserver = new MutationObserver(() => {
       this.updateSelectionPositions();
     });
-    
+
     this.scrollObserver.observe(this.pdfViewerElement, {
       attributes: true,
       childList: true,
@@ -254,15 +264,15 @@ export class PDFSnippingComponent implements OnInit {
   }
   updateSelectionPositions() {
     if (!this.pdfViewerElement) return;
-    
+
     // Get the current transform of the PDF content
     const pdfRect = this.pdfViewerElement.getBoundingClientRect();
     const containerRect = this.pdfContainer.nativeElement.getBoundingClientRect();
-    
+
     // Calculate offset between container and PDF content
     const offsetX = pdfRect.left - containerRect.left;
     const offsetY = pdfRect.top - containerRect.top;
-    
+
     // Update all selection positions
     this.coordsList.forEach(coords => {
       const element = document.getElementById(`selection-${coords.id}`);
@@ -273,4 +283,34 @@ export class PDFSnippingComponent implements OnInit {
       }
     });
   }
+
+  public _data: Array<object> = [
+    {
+      id: "yoh",
+      created: "Today",
+      fields: "23",
+      processed: "1 document",
+      accuracy: "68%",
+      review: "N/A",
+    }
+  ];
+
+  public _actions: Array<iTableLibActionsArgs> = [
+    {
+      title: 'Add New',
+      event: async (args?: unknown) => {
+        this._Router.navigate(["document-upload"])
+      },
+    },
+  ];
+
+  public _rowActions: Array<iTableLibActionsArgs> = [
+    {
+      title: 'Manage',
+      event: async (id: string) => {
+        this._Router.navigate(["snipping"])
+      },
+    },
+  ];
+
 }
