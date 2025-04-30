@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "../Http/HttpService";
 import { iHttpRequest } from "../Http/iHttpService";
-import { iUploadDocumentReq } from "./Interfaces";
+import { iUploadDocumentOcrFlow, iUploadDocumentReq } from "./Interfaces";
 import { firstValueFrom } from "rxjs";
 
 @Injectable({
@@ -17,10 +17,26 @@ export class FileEndpoints {
                 .request<unknown>({ type: 'POST', path: `${this._ControllerPath}/document/upload`, body: args })
         ))
     }
+    // ------ get document template table ------
     public getDocumentTemplateTable() {
         return (firstValueFrom(
             this._HttpService
                 .request<Array<object | string>>({ type: 'POST', path: `${this._ControllerPath}/document/table`, body: null })
+        ))
+    }
+    // ------ get document processed table ------
+    public getDocumentProcessedTable() {
+        return (firstValueFrom(
+            this._HttpService
+                .request<Array<object | string>>({ type: 'POST', path: `${this._ControllerPath}/document/processed-table`, body: null })
+        ))
+    }
+
+    // ------ upload document to ocr flow ------
+    public uploadDocumentOcrFlow(args : iUploadDocumentOcrFlow) {
+        return (firstValueFrom(
+            this._HttpService
+                .request<Array<object | string>>({ type: 'POST', path: `/documents/ocr`, body: args })
         ))
     }
 }

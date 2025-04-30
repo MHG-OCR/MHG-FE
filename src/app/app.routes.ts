@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { SnippingPageComponent } from './pages/Snipping/snipping.page';
 import { AuthGuard } from '../service/Auth/AuthInterceptor';
 import { HomePageComponent } from './pages/Home/home.page';
 import { DocumentUploadComponent } from './pages/Document-Upload/document-upload.page';
+import { ManageTemplatePageComponent } from './pages/Manage-Template/manage-template.page';
 
 const RootPageComponent = HomePageComponent;
 
@@ -23,8 +23,8 @@ export const routes: Routes = [
     canActivate: [],
   },
   {
-    path: 'snipping',
-    component: SnippingPageComponent,
+    path: 'manage-template',
+    component: ManageTemplatePageComponent,
     canActivate: [],
   },
   {

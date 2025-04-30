@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DashboardComponent } from '@lib/dashboard/dashboard.component';
-import { DocumentTemplateComponent } from '../../../components/document-template/document-template';
+import { DocumentTemplateComponent } from '../../../components/document-template-table/document-template';
 
 @Component({
   selector: 'app-home-page',
