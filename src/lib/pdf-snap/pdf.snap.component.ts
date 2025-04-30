@@ -4,6 +4,8 @@ import { NgxExtendedPdfViewerModule, pdfDefaultOptions } from 'ngx-extended-pdf-
 import {TablelibComponent} from "@lib/table-lib/table-lib.component";
 import { iTableLibAbstract, iTableLibActionsArgs, iTableLibIsEmptyArgs,  } from "@lib/table-lib/interface";
 import {Router} from "@angular/router";
+import {FileEndpoints} from "../../service/Endpoints/FileEndpoints";
+import {iCoordinatesReq, Point} from "../../service/Endpoints/Interfaces";
 
 @Component({
   selector: 'app-pdf-snipping',
@@ -12,8 +14,7 @@ import {Router} from "@angular/router";
   standalone: true,
   imports: [
     CommonModule,
-    NgxExtendedPdfViewerModule,
-    TablelibComponent
+    NgxExtendedPdfViewerModule
   ]
 })
 export class PDFSnippingComponent implements OnInit {
@@ -54,8 +55,13 @@ export class PDFSnippingComponent implements OnInit {
 
   ngOnInit(): void {
     pdfDefaultOptions.assetsFolder = 'assets';
+    /*
+    getCoordinates(id/fileName)
+    displayCoordinates
+     */
   }
-  constructor(private readonly _Router: Router) {
+  constructor(private readonly _Router: Router,
+              private _fileEndpointsService: FileEndpoints) {
   }
 
   onFileSelected(event: Event): void {
@@ -212,16 +218,34 @@ export class PDFSnippingComponent implements OnInit {
   removeSelection(index: number): void {
     this.coordsList.splice(index, 1);
   }
-
   clearAllSelections(): void {
     this.coordsList = [];
     this.nextId = 1;
   }
 
   saveSelections(): void {
-
+    //getCoordinates
+    //convert cords value to point or remove point data type
+    //get ID and metadata
+    let pointsData: Point = {
+      x:5,
+      y:5
+    }
+    let coordinatesRequest: iCoordinatesReq = {
+      topLeft:pointsData,
+      topRight:pointsData,
+      bottomLeft: pointsData,
+      bottomRight: pointsData,
+      metaData: "",
+      docId: "docID"
+    }
+    this._fileEndpointsService.saveCoordinates(coordinatesRequest);
     console.log('Saving selections:', this.coordsList);
     alert(`Saved ${this.coordsList.length} selections for processing`);
+  }
+
+  editSelection(index: number): void {
+
   }
   pdfViewerElement: HTMLElement | null = null;
   scrollObserver: MutationObserver | null = null;

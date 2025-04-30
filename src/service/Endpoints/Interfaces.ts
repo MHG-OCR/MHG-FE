@@ -10,10 +10,10 @@ export interface Point {
 }
 
 export interface iCoordinatesReq {
-  topLeft: number; //alternatively use point?
-  topRight:number;
-  bottomLeft: number;
-  bottomRight: number;
+  topLeft: Point; //alternatively use point?
+  topRight: Point;
+  bottomLeft: Point;
+  bottomRight: Point;
   metaData: string;
   docId: string;
 }
