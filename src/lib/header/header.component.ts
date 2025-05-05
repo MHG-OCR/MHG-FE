@@ -15,7 +15,7 @@ import { filter, map, from } from 'rxjs';
 export class AppHeaderComponent {
   constructor(private readonly _Router: Router) {}
   public navigateHome = () => {
-    this._Router.navigate(['/']);
+    this._Router.navigate(['/home']);
   };
   private oktaAuth = inject(OKTA_AUTH);
 
