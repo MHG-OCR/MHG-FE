@@ -2,7 +2,7 @@ import {
   iAuthService,
   iUserStorage,
 } from './iAuthService';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { StorageService } from '@helpers/LocalStorageHelper';
 
@@ -13,7 +13,8 @@ export class AuthService implements iAuthService {
   static cookieKeys = ['userId', 'userRole', 'userToken'];
   constructor(
     private _storageService: StorageService,
-    private _routerAngular: Router
+    private _routerAngular: Router,
+    private _Route: ActivatedRoute,
   ) {
   }
   public StoreCredentials = (userStorage: iUserStorage) => {
@@ -43,4 +44,10 @@ export class AuthService implements iAuthService {
   public navigateToLogin = () => {
     this._routerAngular.navigate(['signin']);
   };
+
+  public testGetTokenFromQueryP = () => {
+    var token = this._Route.snapshot.queryParamMap.get("code")
+    console.log(`token : ${token}`)
+    return token
+  }
 }

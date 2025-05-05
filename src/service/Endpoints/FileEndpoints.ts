@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "../Http/HttpService";
 import { iHttpRequest } from "../Http/iHttpService";
-import { iUploadDocumentOcrFlow, iUploadDocumentReq } from "./Interfaces";
+import { iUploadDocumentReq } from "./Interfaces";
 import { firstValueFrom } from "rxjs";
 
 @Injectable({
@@ -39,4 +39,16 @@ export class FileEndpoints {
                 .request<Array<object | string>>({ type: 'POST', path: `/documents/ocr`, body: args })
         ))
     }
+  public saveCoordinates(args: iCoordinatesReq) {
+    return (firstValueFrom(
+      this._HttpService
+        .request<unknown>({ type: 'POST', path: `${this._ControllerPath}/points/upload`, body: args })
+    ))
+  }
+  public editCoordinates(args: iCoordinatesReq) {
+    return (firstValueFrom(
+      this._HttpService
+        .request<unknown>({ type: 'POST', path: `${this._ControllerPath}/points/upload`, body: args })
+    ))
+  }
 }

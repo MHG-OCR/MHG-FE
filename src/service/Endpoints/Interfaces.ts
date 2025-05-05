@@ -18,3 +18,17 @@ export enum eOcrFlow {
     ConfidenceBased = "ConfidenceBased",
     Hybrid = "Hybrid",
 }
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export interface iCoordinatesReq {
+  topLeft: Point; //alternatively use point?
+  topRight: Point;
+  bottomLeft: Point;
+  bottomRight: Point;
+  metaData: string;
+  docId: string;
+}

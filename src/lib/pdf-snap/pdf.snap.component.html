@@ -11,14 +11,14 @@
 
   <!-- PDF Viewer with Selection Overlay -->
   <div class="pdf-container" #pdfContainer
-       (mousedown)="onMouseDown($event)" 
-       (mousemove)="onMouseMove($event)" 
+       (mousedown)="onMouseDown($event)"
+       (mousemove)="onMouseMove($event)"
        (mouseup)="onMouseUp($event)">
-    
+
     <!-- PDF Viewer Component -->
-    <ngx-extended-pdf-viewer 
+    <ngx-extended-pdf-viewer
       *ngIf="pdfSrc"
-      [src]="pdfSrc" 
+      [src]="pdfSrc"
       [zoom]="'page-actual'"
       [showHandToolButton]="true"
       [showDownloadButton]="false"
@@ -33,15 +33,15 @@
       Upload a PDF to start snipping
     </div>
 
-    <!-- Active Selection Overlay Box (while drawing) TODOD --> 
-    <!-- <div #selectionBox 
-         *ngIf="isSelectionActive" 
+    <!-- Active Selection Overlay Box (while drawing) TODOD -->
+    <!-- <div #selectionBox
+         *ngIf="isSelectionActive"
          class="selection-rectangle active-selection"
          [ngStyle]="selectionStyle">
     </div> -->
 
     <!-- All Completed Selections -->
-    <div *ngFor="let coords of coordsList; let i = index" 
+    <div *ngFor="let coords of coordsList; let i = index"
          [id]="'selection-' + coords.id"
          class="selection-rectangle completed-selection"
          [ngStyle]="getSelectionStyle(coords)">
@@ -60,6 +60,7 @@
           <div class="selection-actions">
             <button (click)="highlightSelection(i)" class="action-btn highlight-btn">Locate</button>
             <button (click)="removeSelection(i)" class="action-btn remove-btn">Remove</button>
+            <button (click)="removeSelection(i)" class="action-btn remove-btn">Edit</button>
           </div>
         </div>
         <div class="coords">

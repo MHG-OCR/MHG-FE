@@ -1,0 +1,10 @@
+{
+  "issuer": "https://dev-25107906.okta.com/oauth2/default",
+  "clientId": "0oaol6ws3ff29uV5X5d7",
+  "redirectUri": "http://localhost:4200/home",
+  "scopes": [
+    "openid",
+    "offline_access",
+    "profile"
+  ]
+}
