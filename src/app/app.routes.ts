@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { SnippingPageComponent } from './pages/Snipping/snipping.page';
-import { AuthGuard } from '../service/Auth/AuthInterceptor';
 import { HomePageComponent } from './pages/Home/home.page';
 import { DocumentUploadComponent } from './pages/Document-Upload/document-upload.page';
+import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
+import { ManageTemplatePageComponent } from './pages/Manage-Template/manage-template.page';
+import { LandingViewComponent } from './pages/landing-view/landing-view.component';
 
 const RootPageComponent = HomePageComponent;
 
