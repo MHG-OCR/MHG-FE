@@ -1,0 +1,10 @@
+{
+  "issuer": "issuer",
+  "clientId": "clientid",
+  "redirectUri": "http://localhost:4200/home",
+  "scopes": [
+    "openid",
+    "offline_access",
+    "profile"
+  ]
+}

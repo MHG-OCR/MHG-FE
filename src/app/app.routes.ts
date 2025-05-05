@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
 import { SnippingPageComponent } from './pages/Snipping/snipping.page';
-import { AuthGuard } from '../service/Auth/AuthInterceptor';
+// import { AuthGuard } from '../service/Auth/AuthInterceptor';
 import { HomePageComponent } from './pages/Home/home.page';
 import { DocumentUploadComponent } from './pages/Document-Upload/document-upload.page';
+import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
+import { LandingViewComponent } from './pages/landing-view/landing-view.component';
 
 const RootPageComponent = HomePageComponent;
 
@@ -10,25 +12,33 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: RootPageComponent,
+    component: LandingViewComponent,
   },
   {
     path: 'home',
     component: HomePageComponent,
-    canActivate: [AuthGuard],
+    canActivate: [OktaAuthGuard],
   },
   {
     path: 'document-upload',
     component: DocumentUploadComponent,
-    canActivate: [],
+    canActivate: [OktaAuthGuard],
   },
   {
     path: 'snipping',
     component: SnippingPageComponent,
-    canActivate: [],
+    canActivate: [OktaAuthGuard],
   },
   {
     path: '**',
-    component: RootPageComponent, // No 404 page, if the route doesnt exist, then go to root page
+    component: RootPageComponent, // No 404 page, if the route doesn't exist, then go to root page
+  },
+  {
+    path: 'login/callback',
+    component: OktaCallbackComponent,
+  },
+  {
+    path: 'landingPage',
+    component: LandingViewComponent,
   },
 ];
