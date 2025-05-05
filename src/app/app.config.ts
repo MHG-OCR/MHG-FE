@@ -26,7 +26,6 @@ import { OktaAuthConfigService, OktaAuthModule } from '@okta/okta-angular';
 import OktaAuth from '@okta/okta-auth-js';
 import { tap, take } from 'rxjs';
 import { AuthInterceptorOkta } from '../service/Auth/auth-interceptor-okta';
-import { AuthInterceptorOktaXXX } from '../service/Auth/auth-interceptor';
 
 function configInitializer(
   httpBackend: HttpBackend,
@@ -53,7 +52,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(OktaAuthModule),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: PreloadingStrategy, useClass: PreloadAllModules },
-    provideHttpClient(withInterceptors([AuthInterceptorOktaXXX])),
+    provideHttpClient(withInterceptors([AuthInterceptorOkta])),
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     provideAnimations(),

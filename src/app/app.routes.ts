@@ -30,15 +30,11 @@ export const routes: Routes = [
     canActivate: [OktaAuthGuard],
   },
   {
-    path: '**',
-    component: RootPageComponent, // No 404 page, if the route doesn't exist, then go to root page
-  },
-  {
     path: 'login/callback',
     component: OktaCallbackComponent,
   },
   {
-    path: 'landingPage',
-    component: LandingViewComponent,
+    path: '**',
+    component: RootPageComponent, // No 404 page, if the route doesn't exist, then go to root page
   },
 ];
