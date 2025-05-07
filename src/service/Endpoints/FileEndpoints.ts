@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "../Http/HttpService";
 import { iHttpRequest } from "../Http/iHttpService";
-import { iUploadDocumentReq } from "./Interfaces";
+import { iCoordinatesReq, iUploadDocumentOcrFlow, iUploadDocumentReq } from "./Interfaces";
 import { firstValueFrom } from "rxjs";
 
 @Injectable({
