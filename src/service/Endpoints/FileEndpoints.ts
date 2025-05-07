@@ -11,6 +11,7 @@ import { firstValueFrom } from "rxjs";
 export class FileEndpoints {
     constructor(private readonly _HttpService: HttpService) { }
     private readonly _ControllerPath: string = "/api/fe"
+    private readonly _DocumentControllerPath: string = "/documents"
     public uploadDocument(args: iUploadDocumentReq) {
         return (firstValueFrom(
             this._HttpService
@@ -39,10 +40,10 @@ export class FileEndpoints {
                 .request<Array<object | string>>({ type: 'POST', path: `/documents/ocr`, body: args })
         ))
     }
-  public saveCoordinates(args: iCoordinatesReq) {
+  public saveCoordinates(args: iCoordinatesReq[]) {
     return (firstValueFrom(
       this._HttpService
-        .request<unknown>({ type: 'POST', path: `${this._ControllerPath}/points/upload`, body: args })
+        .request<unknown>({ type: 'POST', path: `${this._DocumentControllerPath}/points/upload`, body: args })
     ))
   }
   public editCoordinates(args: iCoordinatesReq) {

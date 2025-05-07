@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
 import { NgxExtendedPdfViewerModule, pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
-import {TablelibComponent} from "@lib/table-lib/table-lib.component";
-import { iTableLibAbstract, iTableLibActionsArgs, iTableLibIsEmptyArgs,  } from "@lib/table-lib/interface";
-import {Router} from "@angular/router";
-import {FileEndpoints} from "../../service/Endpoints/FileEndpoints";
-import {iCoordinatesReq, Point} from "../../service/Endpoints/Interfaces";
+import { iTableLibActionsArgs, iTableLibIsEmptyArgs } from "@lib/table-lib/interface";
+import { Router } from "@angular/router";
+
+import { FileEndpoints } from "../../service/Endpoints/FileEndpoints";
+import { iCoordinatesReq } from "../../service/Endpoints/Interfaces";
 
 @Component({
   selector: 'app-pdf-snipping',
@@ -227,19 +227,50 @@ export class PDFSnippingComponent implements OnInit {
     //getCoordinates
     //convert cords value to point or remove point data type
     //get ID and metadata
-    let pointsData: Point = {
-      x:5,
-      y:5
+
+    const duplicateRecords: Record<string, number> = {};
+    const selectionRecords: Record<number, string> = {};
+
+    const duplicateSelections  = this.coordsList.map((_, idx) => {
+      const elem: HTMLInputElement | null = <HTMLInputElement>document.getElementById(`selection-name-${idx}`)
+      let selectionName = `Selection #${idx + 1}`;
+
+      if (elem) {
+        selectionName = elem.value;
+      }
+
+      selectionRecords[idx] = selectionName;
+      duplicateRecords[selectionName] = (duplicateRecords[selectionName] || 0) + 1;
+
+      return [selectionName, idx]
+    }).filter(selectionName => {
+      return duplicateRecords[selectionName[0]] > 1
+    });
+
+    duplicateSelections.forEach(duplicate => {
+      const elem = document.getElementById(`duplicate-${duplicate[1]}`)
+      if (elem) {
+        elem.hidden = false;
+      }
+    })
+
+    if (duplicateSelections.length) {
+      alert("Duplicate selection names")
+      return;
     }
-    let coordinatesRequest: iCoordinatesReq = {
-      topLeft:pointsData,
-      topRight:pointsData,
-      bottomLeft: pointsData,
-      bottomRight: pointsData,
-      metaData: "",
-      docId: "docID"
-    }
-    this._fileEndpointsService.saveCoordinates(coordinatesRequest);
+
+    const coords : Array<iCoordinatesReq> = this.coordsList.map((item, idx) => {
+      return {
+        topLeft: item.topLeft,
+        topRight: item.topRight,
+        bottomLeft: item.bottomLeft,
+        bottomRight: item.bottomRight,
+        metaData: selectionRecords[idx],
+        docId: ''
+      }
+    })
+
+    this._fileEndpointsService.saveCoordinates(coords);
     console.log('Saving selections:', this.coordsList);
     alert(`Saved ${this.coordsList.length} selections for processing`);
   }
