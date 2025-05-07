@@ -6,6 +6,13 @@ import { FileHelper } from '@helpers/FileHelper';
 import { PDFSnippingComponent } from '@lib/pdf-snap/pdf.snap.component';
 import { eOcrFlow } from '../../../service/Endpoints/Interfaces';
 import { DocumentProcessedTableComponent } from '../../../components/document-processed-table/document-processed-table';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+
+
+interface NavState {
+  id: number;
+}
 
 @Component({
   selector: 'manage-template-page',
@@ -15,9 +22,35 @@ import { DocumentProcessedTableComponent } from '../../../components/document-pr
   styleUrls: ['./manage-template.page.less'],
 })
 export class ManageTemplatePageComponent {
+  private router = inject(Router);
+
+  id: number | null = null;
+  pdfBase64String: string | ArrayBuffer = '';
+  
   constructor(
     private readonly _FileEndpoints: FileEndpoints
-  ) { }
+  ) {
+    const navs = this.router.getCurrentNavigation()?.extras.state as NavState | undefined;;
+    this.id = navs?.id ?? null;
+  }
+  
+  async ngOnInit() {
+    if (!this.id) {
+      console.log('No file ID provided — skipping data load.');
+      return;
+    }
+  
+    const data = await this._FileEndpoints.getTemplateDocument({
+      fileId: this.id
+    });
+
+    if (Array.isArray(data) && data.length > 0 && data[0].document_base64) {
+      this.pdfBase64String = `data:application/pdf;base64,${data[0].document_base64}`;
+    } else {
+      return
+    }
+  }
+
   async onSubmit(args: Array<File>) {
     const file = args[0]
     const fileBase64 = await FileHelper.toBase64(file)
@@ -25,7 +58,7 @@ export class ManageTemplatePageComponent {
       fileName: file.name,
       fileId: "todo",
       base64Data: fileBase64,
-      type: eOcrFlow.BoxDetectionConfidence
+      type: eOcrFlow.BoxDetectionConfidence,
     })
     console.log(ocr_result)
   }

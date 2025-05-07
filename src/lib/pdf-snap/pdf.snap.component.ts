@@ -6,6 +6,7 @@ import { iTableLibAbstract, iTableLibActionsArgs, iTableLibIsEmptyArgs,  } from 
 import {Router} from "@angular/router";
 import {FileEndpoints} from "../../service/Endpoints/FileEndpoints";
 import {iCoordinatesReq, Point} from "../../service/Endpoints/Interfaces";
+import { OnChanges, SimpleChanges } from '@angular/core'
 
 @Component({
   selector: 'app-pdf-snipping',
@@ -17,7 +18,7 @@ import {iCoordinatesReq, Point} from "../../service/Endpoints/Interfaces";
     NgxExtendedPdfViewerModule
   ]
 })
-export class PDFSnippingComponent implements OnInit {
+export class PDFSnippingComponent implements OnInit, OnChanges {
   pdfSrc: string | ArrayBuffer = '';
   isSelectionActive = false;
   selectionStyle: { [key: string]: string } = {};
@@ -52,6 +53,8 @@ export class PDFSnippingComponent implements OnInit {
 
   @Input()
   _isEmpty?: iTableLibIsEmptyArgs;
+  @Input() DocumentTemplate?: string | ArrayBuffer;
+
 
   ngOnInit(): void {
     pdfDefaultOptions.assetsFolder = 'assets';
@@ -59,9 +62,21 @@ export class PDFSnippingComponent implements OnInit {
     getCoordinates(id/fileName)
     displayCoordinates
      */
+
+    if (this.DocumentTemplate) {
+      this.pdfSrc = this.DocumentTemplate;
+      this.findPdfViewerElement();
+    }
   }
   constructor(private readonly _Router: Router,
               private _fileEndpointsService: FileEndpoints) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['DocumentTemplate'] && changes['DocumentTemplate'].currentValue) {
+      this.pdfSrc = changes['DocumentTemplate'].currentValue;
+      this.findPdfViewerElement(); // Optional: if needed for delayed rendering
+    }
   }
 
   onFileSelected(event: Event): void {
