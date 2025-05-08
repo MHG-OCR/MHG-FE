@@ -5,12 +5,12 @@ import { TablelibComponent } from "@lib/table-lib/table-lib.component";
 import { FileEndpoints } from "../../service/Endpoints/FileEndpoints";
 
 @Component({
-    selector: 'app-document-template-component',
-    templateUrl: './document-template.html',
+    selector: 'app-document-processed-table-component',
+    templateUrl: './document-processed-table.html',
     standalone: true,
     imports: [TablelibComponent],
 })
-export class DocumentTemplateComponent extends iTableLibAbstract implements OnInit {
+export class DocumentProcessedTableComponent extends iTableLibAbstract implements OnInit {
     public _isEmpty?: iTableLibIsEmptyArgs;
     public _data: Array<object> = [
         {
@@ -29,7 +29,7 @@ export class DocumentTemplateComponent extends iTableLibAbstract implements OnIn
         super()
     }
     async ngOnInit() {
-        var data = await this._FileEndpoints.getDocumentTemplateTable();
+        var data = await this._FileEndpoints.getDocumentProcessedTable();
         if (typeof data[0] == 'object')
             this._data = data as Array<object>;
         else if (typeof data[0] == 'string') {
@@ -49,9 +49,21 @@ export class DocumentTemplateComponent extends iTableLibAbstract implements OnIn
     ];
     public _rowActions: Array<iTableLibActionsArgs> = [
         {
-            title: 'Configure',
+            title: 'Download',
             event: async (id: string) => {
-                this._Router.navigate(["snipping"])
+                return
+            },
+        },
+        {
+            title: 'View',
+            event: async (id: string) => {
+                return
+            },
+        },
+        {
+            title: 'Review',
+            event: async (id: string) => {
+                return
             },
         },
     ];
