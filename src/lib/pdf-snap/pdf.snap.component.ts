@@ -224,9 +224,13 @@ export class PDFSnippingComponent implements OnInit {
   }
 
   saveSelections(): void {
-    //getCoordinates
-    //convert cords value to point or remove point data type
-    //get ID and metadata
+    // Clear duplicate warnings for new save attempt
+    this.coordsList.forEach((_, idx) => {
+      const elem: HTMLElement | null = document.getElementById(`duplicate-${idx}`)
+      if (elem) {
+        elem.hidden = true;
+      }
+    })
 
     const duplicateRecords: Record<string, number> = {};
     const selectionRecords: Record<number, string> = {};
