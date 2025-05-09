@@ -11,6 +11,11 @@ export interface iUploadDocumentOcrFlow {
     base64Data: string
     fileName: string
 }
+export interface iUploadDocumentProcessedOcrFlow {
+  filename: string
+  base64Data: string
+  size: number
+}
 
 export enum eOcrFlow {
     ContourSegmented = "ContourSegmented",
