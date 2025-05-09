@@ -4,12 +4,22 @@ export interface iUploadDocumentReq {
     base64Data: string;
 }
 
+export interface iTemplateFileReq{
+  // TODO: This needs to change once the endpoint is opened to the correct call params
+  fileId: number;
+}
+
+export interface iTemplateDocument{
+  id: number;
+  document_base64: string
+}
+
 
 export interface iUploadDocumentOcrFlow {
-    type: eOcrFlow
-    fileId: string
-    base64Data: string
-    fileName: string
+    type: eOcrFlow;
+    fileId: string;
+    base64Data: string;
+    fileName: string;
 }
 export interface iUploadDocumentProcessedOcrFlow {
   filename: string

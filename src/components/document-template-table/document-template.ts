@@ -51,7 +51,9 @@ export class DocumentTemplateComponent extends iTableLibAbstract implements OnIn
         {
             title: 'Manage',
             event: async (id: string) => {
-                this._Router.navigate(["manage-template"])
+                this._Router.navigate(["manage-template"], {
+                    state: { id: id }
+                  })
             },
         },
     ];
