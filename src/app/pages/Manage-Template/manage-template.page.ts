@@ -55,10 +55,9 @@ export class ManageTemplatePageComponent {
     const file = args[0]
     const fileBase64 = await FileHelper.toBase64(file)
     var ocr_result = await this._FileEndpoints.uploadDocumentOcrFlow({
-      fileName: file.name,
-      fileId: "todo",
+      filename: file.name,
       base64Data: fileBase64,
-      type: eOcrFlow.BoxDetectionConfidence,
+      size: file.size
     })
     console.log(ocr_result)
   }
