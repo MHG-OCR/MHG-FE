@@ -5,8 +5,10 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthService } from './AuthService';
+import { OKTA_AUTH } from '@okta/okta-angular';
+import OktaAuth from '@okta/okta-auth-js';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +17,14 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private readonly _authService: AuthService) {}
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
+    const oktaAuth = inject(OKTA_AUTH) as OktaAuth;
+    var res = oktaAuth.getAccessToken()
+    // var res = this._authService.testGetTokenFromQueryP()
     req = req.clone({
       setHeaders: {
-        userId: this._authService.GetCredentials()?.userId ?? `null`,
-        userRole: this._authService.GetCredentials()?.userRole ?? `null`,
-        userToken: this._authService.GetCredentials()?.userToken ?? `null`,
+        Authorization: `Bearer ${res}`,
         'Content-Type': 'application/json',
       },
     });
